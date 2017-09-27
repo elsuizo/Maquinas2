@@ -23,7 +23,7 @@
 # You should have received a copy of the GNU General Public License
 ---------------------------------------------------------------------------=#
 using DifferentialEquations
-using Plots
+using Plots; pyplot()
 
 #---------------------------------------------------------------------------
 # constants
@@ -37,13 +37,14 @@ const h = 100
 const σ = 5.67e-8
 const ρ = 8933
 const c = 385
-const I = 3
+I₁(t) = (t ≥ 0) ? 5.2 : 0.0
+I₂(t) = t
+I₃(t) = sin(t)
 #differential equation
-f(t, T) = (I^2 * Rₑ - π * D * h * (T - T_inf) - π * D * ϵ * σ *(T^4 - T_alr^4)) / (ρ * c *(π * (D^2)/4))
-T₀ = 0.0
-tspan = (0.0, 3.0)
-prob  = ODEProblem(f, T₀, tspan)
+f(t, T) = (I₁(t)^2 * Rₑ - π * D * h * (T - T_inf) - π * D * ϵ * σ *(T^4 - T_alr^4)) / (ρ * c *(π * (D^2)/4))
+T₀ = 25.0 + 273.0
+tsimu = (0.0, 240.0)
+prob  = ODEProblem(f, T₀, tsimu)
 solution = solve(prob, Tsit5(), reltol=1e-8, abstol=1e-8)
 
-#= plot(solution,linewidth=5,title="Solution to the linear ODE with a thick line", =#
-#=      xaxis="Time (t)",yaxis="u(t) (in μm)",label="My Thick Line!") # legend=false =#
+plot(solution.t, solution - 273)
