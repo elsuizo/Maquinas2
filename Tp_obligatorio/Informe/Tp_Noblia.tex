@@ -1,0 +1,301 @@
+%--------------------------------------------------------------------------
+% @file informe_tp1.tex
+%
+% @date 10/25/16 19:53:28
+% @author Martin Noblia
+% @email martin.noblia@openmailbox.org
+%
+% @brief
+%
+% @detail
+%
+% Licence:
+%This program is free software: you can redistribute it and/or modify
+%it under the terms of the GNU General Public License as published by
+%the Free Software Foundation, either version 3 of the License, or (at
+%your option) any later version.
+%
+%This program is distributed in the hope that it will be useful, but
+%WITHOUT ANY WARRANTY; without even the implied warranty of
+%MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+%General Public License for more details.
+%
+%You should have received a copy of the GNU General Public License
+%---------------------------------------------------------------------------
+% Start
+%---------------------------------------------------------------------------
+\documentclass[10pt]{article}
+%---------------------------------------------------------------------------
+% Packages
+%---------------------------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{epigraph}
+\usepackage{lipsum}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{moredefs}
+\usepackage{fancybox}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{wallpaper}
+\usepackage{textcomp}
+\usepackage{minted} % for syntax highlight
+\usepackage{textcomp} % for the TradeMark shit
+\usepackage{enumerate}
+\usepackage{cite}
+
+%---------------------------------------------------------------------------
+% Definitions
+%---------------------------------------------------------------------------
+\oddsidemargin -0.2in \textwidth 7.0in \topmargin -0.9in \textheight
+9.0in
+\parindent 3em
+%---------------------------------------------------------------------------
+% Cut of Spanish words
+%---------------------------------------------------------------------------
+\hyphenation{e-jem-plo
+e-rro-res de-pen-dien-te co-rrien-te res-pues-ta fi-gu-ran
+cons-tan-tes o-pe-ra-cion i-lu-mi-na-cion}
+%---------------------------------------------------------------------------
+% Page styles
+%---------------------------------------------------------------------------
+\pagestyle{fancy}
+\headheight 50pt
+\renewcommand{\arrayrulewidth}{3pt}
+\newtheorem{defi}{{\it Definición}}[section]
+%---------------------------------------------------------------------------
+% Header page
+%---------------------------------------------------------------------------
+\rhead{\includegraphics[width=.075\textwidth]{./Images/logo_iaci2.eps}} % iaci logo
+\chead{}
+\lhead{Procesos y Maquinas 2}
+\rfoot{2º cuatrimestre 2017  }
+\cfoot{\thepage}
+\lfoot{\bf{Universidad Nacional de Quilmes}}
+%---------------------------------------------------------------------------
+% Colors
+%---------------------------------------------------------------------------
+\definecolor{azul-claro}{rgb}{0.335,0.89,1}
+\definecolor{gainsboro}{rgb}{0.86,0.86,0.86}
+\definecolor{mediumseagreen}{rgb}{0.24,0.7,0.44}
+\definecolor{moccasin}{rgb}{1,0.89,0.71}
+\definecolor{cornflowerblue}{rgb}{0.39,0.58,0.93}
+\definecolor{lightgray}{rgb}{0.83,0.83,0.83}
+\definecolor{darkgrey}{rgb}{0.66,0.66,0.66}
+\definecolor{darkslategray}{rgb}{0.18,0.31,0.31}
+\definecolor{lavender}{rgb}{0.9,0.9,0.98}
+\definecolor{azure}{rgb}{0.94,1,1}
+\definecolor{honeydew}{rgb}{0.94,1,0.94}
+%---------------------------------------------------------------------------
+% Custom section header(this shit generate a box color)
+%---------------------------------------------------------------------------
+\renewcommand{\arrayrulewidth}{1pt}
+\newcommand{\mcaja}[1]{%
+{{\fboxsep 10pt \fboxrule 1pt%
+\fcolorbox{black}{lightgray}{%
+\color{black} \Huge #1}}}
+}
+\newcommand{\nuevobox}[1]{%
+{{\fboxsep 14pt \fboxrule 1pt%
+\fcolorbox{black}{darkgrey}{%
+\color{lavender} \huge #1}}}
+}
+\newcommand{\ssection}[1]{\section[#1]{\mcaja{#1}}}
+\makeatletter
+\newcommand{\sect}[1]{\subsection[#1]{\nuevobox{#1}}}
+\makeatletter
+\def\section{\@ifstar\unnumberedsection\numberedsection}
+\def\numberedsection{\@ifnextchar[%]
+\numberedsectionwithtwoarguments\numberedsectionwithoneargument}
+\def\unnumberedsection{\@ifnextchar[%]
+\unnumberedsectionwithtwoarguments\unnumberedsectionwithoneargument}
+\def\numberedsectionwithoneargument#1{\numberedsectionwithtwoarguments[#1]{#1}}
+\def\unnumberedsectionwithoneargument#1{\unnumberedsectionwithtwoarguments[#1]{#1}}
+\def\numberedsectionwithtwoarguments[#1]#2{%
+\ifhmode\par\fi
+\removelastskip
+\vskip 3ex\goodbreak
+\refstepcounter{section}%
+\begingroup
+%\noindent
+\leavevmode\large\bfseries\raggedright\mcaja%%
+\thesection\ #2\par\nobreak
+\endgroup
+\noindent\hrulefill\nobreak
+\vskip 2ex\nobreak
+\addcontentsline{toc}{section}{%
+\protect\numberline{\thesection}%
+#1}%
+}
+\def\unnumberedsectionwithtwoarguments[#1]#2{%
+\ifhmode\par\fi
+\removelastskip
+\vskip 3ex\goodbreak
+% \refstepcounter{section}%
+\begingroup
+\noindent
+\leavevmode\Large\bfseries\raggedright
+% \thesection\
+#2\par\nobreak
+\endgroup
+\noindent\hrulefill\nobreak
+\vskip 0ex\nobreak
+\addcontentsline{toc}{section}{%
+%
+\protect\numberline{\thesection}%
+#1}%
+}
+\makeatother
+%%%Cap\’itulos
+\usepackage{helvet}
+%\usepackage{psboxit,pstcol}
+\makeatletter
+\def\@makechapterhead#1{%
+{\parindent \z@ \raggedright \reset@font
+\hbox to \hsize{%
+\rlap{\raisebox{-2.5em}{\raisebox{\depth}{%%% Necesita la imagen "imgCapitulo"
+\includegraphics[width=10em]{./Images/logo_iaci2.eps}}}}%
+\rlap{\hbox to 6em{\hss
+\reset@font\sffamily\fontsize{8em}{8em}\selectfont\black
+\thechapter\hss}}%
+\hspace{10em}%
+\vbox{%
+\advance\hsize by -10em
+\reset@font\fontfamily{hv}\bfseries\Large
+#1
+\par
+}%
+}}%
+\vskip 5pt
+\hrulefill
+\vskip 50pt
+}
+%---------------------------------------------------------------------------
+% Redefinition of Theorems and Corollarys
+%---------------------------------------------------------------------------
+\makeatother
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{corollary}{Corolario}[theorem]
+\newtheorem{lemma}[theorem]{Lema}
+%---------------------------------------------------------------------------
+% Title Page decoration
+%---------------------------------------------------------------------------
+\definecolor{titlepagecolor}{cmyk}{.73,.37,0,.37}
+
+
+\newcommand\titlepagedecoration{%
+\begin{tikzpicture}[remember picture,overlay,shorten >= -10pt]
+
+\coordinate (aux1) at ([yshift=-15pt]current page.north east);
+\coordinate (aux2) at ([yshift=-410pt]current page.north east);
+\coordinate (aux3) at ([xshift=-4.5cm]current page.north east);
+\coordinate (aux4) at ([yshift=-150pt]current page.north east);
+
+\begin{scope}[titlepagecolor!40,line width=12pt,rounded corners=12pt]
+\draw
+  (aux1) -- coordinate (a)
+  ++(225:5) --
+  ++(-45:5.1) coordinate (b);
+\draw[shorten <= -10pt]
+  (aux3) --
+  (a) --
+  (aux1);
+\draw[opacity=0.6,titlepagecolor,shorten <= -10pt]
+  (b) --
+  ++(225:2.2) --
+  ++(-45:2.2);
+\end{scope}
+\draw[titlepagecolor,line width=8pt,rounded corners=8pt,shorten <= -10pt]
+  (aux4) --
+  ++(225:0.8) --
+  ++(-45:0.8);
+\begin{scope}[titlepagecolor!70,line width=6pt,rounded corners=8pt]
+\draw[shorten <= -10pt]
+  (aux2) --
+  ++(225:3) coordinate[pos=0.45] (c) --
+  ++(-45:3.1);
+\draw
+  (aux2) --
+  (c) --
+  ++(135:2.5) --
+  ++(45:2.5) --
+  ++(-45:2.5) coordinate[pos=0.3] (d);
+\draw
+  (d) -- +(45:1);
+\end{scope}
+\end{tikzpicture}%
+}
+
+
+\newcommand*{\plogo}{\fbox{$\mathcal{PL}$}}
+\newcommand*{\titleGP}{\begingroup % Create the command for including the title page in the document
+\centering % Center all text
+\vspace*{\baselineskip} % White space at the top of the page
+
+\rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt} % Thick horizontal line
+\rule{\textwidth}{0.4pt}\\[\baselineskip] % Thin horizontal line
+
+{\LARGE Procesos y Maquinas industriales 2\\[0.3\baselineskip] \textit{Trabajo Practico Obligatorio}}\\[0.2\baselineskip] % Title
+
+\rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} % Thin horizontal line
+\rule{\textwidth}{1.6pt}\\[\baselineskip] % Thick horizontal line
+
+\scshape % Small caps
+{\Large Martin Noblia\\}
+\vspace*{2\baselineskip} % Whitespace between location/year and editors
+
+Profesora: \\[\baselineskip]
+{\Large Mariana Suarez\\}
+\vspace*{2\baselineskip} % Whitespace between location/year and editors
+Instructor: \\[\baselineskip]
+{\Large Roberto Peyton\\}
+\vfill % Whitespace between editor names and publisher logo_iaci2
+\includegraphics[width=.175\textwidth]{./Images/logo_iaci2.eps}
+
+% Editor list
+{\itshape Universidad Nacional de Quilmes \par} % Editor affiliation
+
+\vfill % Whitespace between editor names and publisher logo
+
+%\plogo \\[0.3\baselineskip] % Publisher logo
+{\scshape 2017} \\[0.3\baselineskip] % Year published
+%{\large THE PUBLISHER}\par % Publisher
+
+\endgroup}
+%---------------------------------------------------------------------------
+% Begin of the document
+%---------------------------------------------------------------------------
+\begin{document}
+\pagestyle{empty}
+
+\titleGP
+\titlepagedecoration
+
+
+\newpage
+\pagestyle{fancy}
+
+\section{Modelado y simulacion de un sistema termico por analogia con un circuito electrico}
+\section{Modelado y simulacion de un sistema de calentamiento solar}
+\section{Modelado y simulacion de un sistema de almacenamiento y distribucion de agua }
+%-------------------------------------------------------------------------
+% Bibliografia
+%-------------------------------------------------------------------------
+\begin{thebibliography}{6}
+   \bibitem{Principal}{Incropera y De Witt, "Fundamentos de transferencia de calor", 4Ed}
+\end{thebibliography}
+
+\end{document}
+
