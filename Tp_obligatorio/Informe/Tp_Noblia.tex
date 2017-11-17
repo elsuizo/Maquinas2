@@ -55,7 +55,8 @@
 \usepackage{textcomp} % for the TradeMark shit
 \usepackage{enumerate}
 \usepackage{cite}
-
+\usepackage{circuitikz} % for the electric circuit
+\usetikzlibrary{arrows}
 %---------------------------------------------------------------------------
 % Definitions
 %---------------------------------------------------------------------------
@@ -103,9 +104,9 @@ cons-tan-tes o-pe-ra-cion i-lu-mi-na-cion}
 %---------------------------------------------------------------------------
 \renewcommand{\arrayrulewidth}{1pt}
 \newcommand{\mcaja}[1]{%
-{{\fboxsep 10pt \fboxrule 1pt%
-\fcolorbox{black}{lightgray}{%
-\color{black} \Huge #1}}}
+{{\fboxsep 12pt \fboxrule 2pt%
+\fcolorbox{black}{darkgrey}{%
+\color{red} \Huge #1}}}
 }
 \newcommand{\nuevobox}[1]{%
 {{\fboxsep 14pt \fboxrule 1pt%
@@ -288,6 +289,26 @@ Instructor: \\[\baselineskip]
 \pagestyle{fancy}
 
 \section{Modelado y simulacion de un sistema termico por analogia con un circuito electrico}
+
+\begin{tikzpicture}[american]
+%--------start graphics code --------
+\path (0,0) coordinate (ref_gnd);
+\draw
+   (ref_gnd) to[I, l=$P_{d}$] ++(0,4)
+            -- ++(2,0)   to[C=\(C_j\)] ++(0,-4) -- (ref_gnd)
+            ++(2,4)   to[R=\(R_{jb}\)] ++(2.5,0) to[C=\(C_{b}\)] ++(0,-4) -- ++(-2.5,0)
+            ++(2.5,4)   to[R=\(R_{bc}\)] ++(2.5,0) to[C=\(C_{c}\)] ++(0,-4) -- ++(-2.5,0)
+            ++(2.5,4)   to[R=\(R_{ca}\)] ++(4.5,0) to[V=\(T_{a}\)] ++(0,-4) -- ++(-4.5,0);
+\fill[color=black] (ref_gnd)++(11.5,4)   circle[radius=0.08]node[anchor=south] {$T_{a}$};
+\fill[color=black] (ref_gnd)++(4.5,4) circle[radius=0.08]node[anchor=south] {$T_{b}$};
+\fill[color=black] (ref_gnd)++(2,4)   circle[radius=0.08]node[anchor=south] {$T_{j}$};
+\fill[color=black] (ref_gnd)++(7,4) circle[radius=0.08]node[anchor=south] {$T_{c}$};
+\draw[color=red,dashed] (-.3,-.5) +(-1,5.5) rectangle +(6.8,0)node[anchor=north] at(3, -.5) {Semiconductor};
+\draw[color=orange,dashed] (7.5,-.5) +(-1,5.5) rectangle +(3,0)node[anchor=north] at(8.5, -.5) {Encapsulado};
+\draw[color=black,dashed] (-.7,-1.5) +(-1.5,7) rectangle +(11.2,0)node[anchor=north] at(3.5, -1.6) {Dispositivo electronico};
+%--------end graphics code ----4-----
+\end{tikzpicture}
+
 \section{Modelado y simulacion de un sistema de calentamiento solar}
 \section{Modelado y simulacion de un sistema de almacenamiento y distribucion de agua }
 %-------------------------------------------------------------------------
