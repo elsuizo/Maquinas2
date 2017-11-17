@@ -37,7 +37,7 @@ const h = 100
 const σ = 5.67e-8
 const ρ = 8933
 const c = 385
-I₁(t) = (t ≥ 0) ? 5.2 : 0.0
+I₁(t) = (t ≥ 0) ? 5.2 : 0.0 # step function
 I₂(t) = t
 I₃(t) = sin(t)
 #differential equation
