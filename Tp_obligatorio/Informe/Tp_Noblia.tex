@@ -294,11 +294,11 @@ Instructor: \\[\baselineskip]
 %--------start graphics code --------
 \path (0,0) coordinate (ref_gnd);
 \draw
-   (ref_gnd) to[I, l=$P_{d}$] ++(0,4)
-            -- ++(2,0)   to[C=\(C_j\)] ++(0,-4) -- (ref_gnd)
-            ++(2,4)   to[R=\(R_{jb}\)] ++(2.5,0) to[C=\(C_{b}\)] ++(0,-4) -- ++(-2.5,0)
-            ++(2.5,4)   to[R=\(R_{bc}\)] ++(2.5,0) to[C=\(C_{c}\)] ++(0,-4) -- ++(-2.5,0)
-            ++(2.5,4)   to[R=\(R_{ca}\)] ++(4.5,0) to[V=\(T_{a}\)] ++(0,-4) -- ++(-4.5,0);
+   (ref_gnd) to[I, l=$P_{d}$, i_=$q$] ++(0,4)
+            -- ++(2,0)   to[C=\(C_j\), i=$q_j$] ++(0,-4) -- (ref_gnd)
+            ++(2,4)   to[R=\(R_{jb}\)] ++(2.5,0) to[C=\(C_{b}\), i=$q_b$] ++(0,-4) -- ++(-2.5,0)
+            ++(2.5,4)   to[R=\(R_{bc}\)] ++(2.5,0) to[C=\(C_{c}\), i=$q_c$] ++(0,-4) -- ++(-2.5,0)
+            ++(2.5,4)   to[R=\(R_{ca}\)] ++(4.5,0) to[V=\(T_{a}\), i=$q_a$] ++(0,-4) -- ++(-4.5,0);
 \fill[color=black] (ref_gnd)++(11.5,4)   circle[radius=0.08]node[anchor=south] {$T_{a}$};
 \fill[color=black] (ref_gnd)++(4.5,4) circle[radius=0.08]node[anchor=south] {$T_{b}$};
 \fill[color=black] (ref_gnd)++(2,4)   circle[radius=0.08]node[anchor=south] {$T_{j}$};
