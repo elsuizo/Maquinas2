@@ -294,7 +294,9 @@ Instructor: \\[\baselineskip]
    \item Utilizando la analogía de los sistemas eléctricos, modelar matemáticamente el sistema correspondiente al circuito mostrado en la figura 1, que representa un dispositivo electrónico de potencia sin disipador.
    \item En la práctica y para poder garantizar condiciones operativas seguras se utilizan disipadores, tal como se plantea en la introducción. Desarrollar el circuito térmico equivalente para un dispositivo electrónico de potencia con disipador. Identificar en forma clara el circuito implementado y modelar matemáticamente el sistema propuesto.
 \end{enumerate}
-
+% Circuito de la figura 1
+\begin{figure}[h]
+\centering
 \begin{tikzpicture}[american]
 %--------start graphics code --------
 \path (0,0) coordinate (ref_gnd);
@@ -313,7 +315,8 @@ Instructor: \\[\baselineskip]
 \draw[color=black,dashed] (-.7,-1.5) +(-1.5,7) rectangle +(11.2,0)node[anchor=north] at(3.5, -1.6) {Dispositivo electronico};
 %--------end graphics code ----4-----
 \end{tikzpicture}
-
+\caption{Circuito térmico equivalente}
+\end{figure}
 \section{Modelado y simulacion de un sistema de calentamiento solar}
 \section{Modelado y simulacion de un sistema de almacenamiento y distribucion de agua }
 %-------------------------------------------------------------------------
