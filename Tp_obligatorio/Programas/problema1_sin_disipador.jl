@@ -46,4 +46,4 @@ q(t) = 175
 f(t, T) = A * T - [0, q(t) * C_j] + [(1 / R_ca * C_c) * T_a, 0]
 prob = ODEProblem(f, T₀, tspan)
 sol = solve(prob)
-plot((sol[1, :] - sol[2, :])/R_jc)
+plot(sol.t, sol[1, :])
