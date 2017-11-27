@@ -33,7 +33,7 @@ const  R_jc  =  1
 const  R_ca  =  30
 const  T_a   =  30
 
-a_11 = (-1 / C_c)*( 1 / R_jc + 1 / R_ca)
+a_11 = (-1 / C_c) * ( 1 / R_jc + 1 / R_ca)
 a_12 = (1 / (R_jc * C_c))
 a_21 = (1 / (C_j * R_jc))
 a_22 = (-1/ (C_j * R_jc))
@@ -46,4 +46,9 @@ q(t) = 175
 f(t, T) = A * T - [0, q(t) * C_j] + [(1 / R_ca * C_c) * T_a, 0]
 prob = ODEProblem(f, T₀, tspan)
 sol = solve(prob)
-plot(sol.t, sol[1, :])
+plot(sol[1, :], label=L"T_c")
+plot(sol[2, :], label=L"T_j")
+xlabel(L"t")
+ylabel(L"T")
+grid("on")
+legend()

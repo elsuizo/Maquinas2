@@ -24,29 +24,21 @@
 ---------------------------------------------------------------------------=#
 using DifferentialEquations
 using PyPlot
-# defining the constants
-C_j   =  0.5
-#= C_c   =  6.8 =#
-#= #= R_jc  =  1 =# =#
-R_ca  =  30
-
-#= a_11 = (-1 / C_c)*( 1 / R_jc + 1 / R_ca) =#
-#= a_12 = (1 / (R_jc * C_c)) =#
-#= a_21 = (1 / (C_j * R_jc)) =#
-#= a_22 = (-1/ (C_j * R_jc)) =#
-T_a  = 30
 
 q(t) = 175
 
 family = @ode_def heat_simulation begin
    dT_c = (-1 / C_c)*( 1 / R_jc + 1 / R_ca) * T_c + (1 / (R_jc * C_c)) * T_j + (T_a / R_ca * C_c)
    dT_j = (1 / (C_j * R_jc)) * T_c + (-1/ (C_j * R_jc)) * T_j - (q(t) * C_j)
-end R_jc=>1 C_c=>6.8
+end R_jc=>1.0 C_c=>6.8 R_ca=>30.0 C_j=>0.5 T_a=>30.0
 
-T₀ = [0.0, 0.0]
+T₀ = [0.0 0.0]
 tspan = (0.0, 3600.0)
-problems = [ODEProblem(heat_simulation(C_c=parameter), T₀, tspan) for parameter in 1:10]
+problems = [ODEProblem(heat_simulation(T_a=parameter), T₀, tspan) for parameter in 30:45]
 solutions = solve.(problems)
-for solution in solutions
-   plot(solution[2, :])
+for (num, solution) in enumerate(solutions)
+   plot(solution[2, :], label=latexstring("T_a="*"$(num + 30)"))
+   legend(bbox_to_anchor=(1.09,1), loc="upper right", ncol=1)
+   xlabel(L"t")
+   ylabel(L"T")
 end
