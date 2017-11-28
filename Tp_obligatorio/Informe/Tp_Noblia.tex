@@ -33,7 +33,7 @@
 \usepackage{tikz}
 \usepackage{epigraph}
 \usepackage{lipsum}
-\usepackage{hyperref}
+\usepackage[colorlinks]{hyperref}
 \usepackage{listings}
 \usepackage{fancyhdr}
 \usepackage[utf8]{inputenc}
@@ -287,7 +287,7 @@ Instructor: \\[\baselineskip]
 \newpage
 \pagestyle{fancy}
 \section{Modelado y simulación de un sistema térmico por analogía con un circuito eléctrico}
-   \subsection{Diseño y modelización}
+\subsection{Diseño y modelización}
 \begin{enumerate}
    \item Utilizando la analogía de los sistemas eléctricos, modelar matemáticamente el sistema correspondiente al circuito mostrado en la figura 1, que representa un dispositivo electrónico de potencia sin disipador.
    \item En la práctica y para poder garantizar condiciones operativas seguras se utilizan disipadores, tal como se plantea en la introducción. Desarrollar el circuito térmico equivalente para un dispositivo electrónico de potencia con disipador. Identificar en forma clara el circuito implementado y modelar matemáticamente el sistema propuesto.
@@ -318,6 +318,26 @@ Capacidad térmica                                                        & $C$ 
 \end{table}
 %------------------------------------------------------------------------------
 %                      fin tabla analogias
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+%                      tabla analogias mate
+%------------------------------------------------------------------------------
+Donde las relaciones matemáticas son:
+\begin{table}[H]
+\centering
+\caption{Analogías matemáticas}
+\label{tabla:analogias_mate}
+\begin{tabular}{c|
+>{\columncolor[HTML]{FFFC9E}}c |
+>{\columncolor[HTML]{FFFC9E}}c |}
+\cline{2-3}
+\multicolumn{1}{l|}{}                                                                      & \cellcolor[HTML]{C0C0C0}\textbf{Modelo térmico} & \cellcolor[HTML]{C0C0C0}\textbf{Modelo eléctrico} \\ \hline
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFCB2F}\textit{\textbf{Ecuación de conducción}}}     & $q=\dfrac{T_{2}-T_{1}}{R}$                                               & $i=\dfrac{V_{2}-V_{1}}{R}$                                                 \\ \hline
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFCB2F}\textit{\textbf{Ecuación de almacenamiento}}} & $\dfrac{dT}{dt}=\dfrac{q}{C}$                                            & $\dfrac{dV}{dt}=\dfrac{i}{C}$                                              \\ \hline
+\end{tabular}
+\end{table}
+%------------------------------------------------------------------------------
+%                      fin tabla analogias mate
 %------------------------------------------------------------------------------
 Por ello las propiedades térmicas de un dispositivo electrónico pueden modelarse con un circuito eléctrico. Sea el siguiente modelo térmico de un dispositivo electrónico:
 %------------------------------------------------------------------------------
@@ -357,8 +377,92 @@ Donde:
    \item $R_{ca}$: Resistencia carcasa/ambiente
    \item $C_{c}$: Capacidad térmica de la carcasa
 \end{itemize}
+Generalmente el modelo térmico para $R_{jb}$, $R_{bc}$ y $C_b$ es más complejo ya que depende de como es fabricado el dispositivo. Por ello los fabricantes de estos
+dispositivos entregan una resistencia térmica $R_{jc}$ (juntura/carcasa) que resume las propiedades de fabricación. Teniendo en cuenta esto, el circuito que modela
+al dispositivo electrónico queda:
+%------------------------------------------------------------------------------
+%                      circuito simplificado
+%------------------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[american]
+\path (0,0) coordinate (ref_gnd);
+\draw
+   (ref_gnd) to[I, l=$P_{d}$, i_=$q$] ++(0,4)
+            -- ++(2,0)   to[C=\(C_j\), i=$q_j$] ++(0,-4) -- (ref_gnd)
+            ++(2.0,4)   to[R=\(R_{jc}\)] ++(2.5,0) to[C=\(C_{c}\), i=$q_c$] ++(0,-4) -- ++(-2.5,0)
+            ++(2.5,4)   to[R=\(R_{ca}\)] ++(4.5,0) to[V=\(T_{a}\), i=$q_a$] ++(0,-4) -- ++(-4.5,0);
+\fill[color=black] (ref_gnd)++(9,4)   circle[radius=0.08]node[anchor=south] {$T_{a}$};
+\fill[color=black] (ref_gnd)++(4.5,4) circle[radius=0.08]node[anchor=south] {$T_{c}$};
+\fill[color=black] (ref_gnd)++(2,4)   circle[radius=0.08]node[anchor=south] {$T_{j}$};
+\draw[color=red,dashed] (-.3,-.5) +(-1,5.5) rectangle +(4.3,0)node[anchor=north] at(1, -.5) {Semiconductor};
+\draw[color=orange,dashed] (5,-.5) +(-1,5.5) rectangle +(2.5,0)node[anchor=north] at(5.5, -.5) {Encapsulado};
+\draw[color=black,dashed] (-.7,-1.5) +(-1.5,7) rectangle +(8.2,0)node[anchor=north] at(2.5, -1.6) {Dispositivo electrónico};
+\end{tikzpicture}
+\caption{Circuito térmico equivalente simplificado}
+\end{figure}
+%------------------------------------------------------------------------------
+%                      fin circuito simplificado
+%------------------------------------------------------------------------------
+Para modelar matemáticamente el circuito, aplicamos la ley de Nodos de Kirchoff teniendo en cuenta las analogias vistas en las tablas~\ref{tabla:analogias} y~\ref{tabla:analogias_mate}. Donde nos quedan las siguientes ecuaciones:
+\begin{equation}
+\label{eq:nodos}
+   \left\{
+      \begin{array}{ll}
+         q + q_{j} + \dfrac{T_{j}- T_{c}}{R_{jc}}=0\\[10pt] %truco para agregar espacio
+         \dfrac{T_{c}- T_{j}}{R_{jc}} + q_{c} + \dfrac{T_{c}- T_{a}}{R_{ca}}=0
+      \end{array}
+   \right.
+\end{equation}
+Luego si reemplazamos las expresiones para las temperaturas en funcion del tiempo, nos quedan las siguientes ecuaciones diferenciales que modelan el problema:
+\begin{equation}
+\medskip
+\label{eq:diferenciales}
+   \left\{
+      \begin{array}{ll}
+         \dfrac{dT_{j}}{dt}=\dfrac{T_{c}}{C_{j}R_{jc}}-\dfrac{T_{j}}{C_{j}R_{jc}}-\dfrac{q}{C_{j}}\\[10pt] %truco para agregar espacio
+         \dfrac{dT_{c}}{dt}=\dfrac{T_{j}}{C_{c}R_{jc}}+\dfrac{T_{a}}{C_{c}R_{ca}}-\dfrac{T_{c}}{C_{c}}\left(\dfrac{1}{R_{jc}}+\dfrac{1}{R_{ca}}\right)
+      \end{array}
+   \right.
+\end{equation}
+
+%------------------------------------------------------------------------------
+%                      fin problema 1
+%------------------------------------------------------------------------------
+
+%------------------------------------------------------------------------------
+%                      problema 2
+%------------------------------------------------------------------------------
 \section{Modelado y simulacion de un sistema de calentamiento solar}
+\begin{enumerate}
+   \item Modele matemáticamente el sistema de calentamiento, tomando como variable de salida la temperatura $\theta(t)$
+   \item Halle el flujo de calor por radiación necesario para obtener en estado estacionario una temperatura de salida $\theta_{ref}=60^{\circ}C$
+   \item Obtenga el tiempo necesario para alcanzar dicha temperatura, si el fluido a calentar se encuentra a $\theta_{0}=15^{\circ}C$
+   \item En época invernal la radiación solar se reduce notablemente y es insuficiente para alcanzar la temperatura deseada. Considere una situación en donde la
+      radiación es del $40\%$ de la obtenida en el item anterior, y la temperatura inicial del fluído es de $15^{\circ}C$. Cual es la temperatura de estado
+      estacionario en estas condiciones?
+   \item Diseñe un circuito que complemente el colector solar para lograr la temperatura deseada de $60^{\circ}C$. Cuando el sistema de calentamiento se encuentra
+      funcionando en lazo abierto, cualquier pequeña perturbacion en las condiciones teóricas de operación produce una desviación no deseada en la temperatura
+      estacionaria de salida. Por este motivo, se ha introducido un controlador PI para garantizar el seguimiento de la consigna de temperatura en estado estacionario.
+      De esta manera, una vez cerrado el lazo, la potencia calorífica que se suministra al circuito complementario es calculada directamente por el algoritmo de
+      control y la nueva variable de entrada al sistema es entonces la temperatura de referencia $\theta_{ref}$
+   \item Modele matemáticamente el sistema a lazo cerrado, tomando como variable de salida la temperatura $\theta(t)$ y como variable de entrada su valor de referencia $\theta_{ref}$
+   \item Simule la evolución dinámica de la temperatura del sistema desde un instante inicial $\theta_{0}$ hasta un valor de referencia $\theta_{ref}$, operando
+      en lazo abierto y en lazo cerrado, para tres valores distintos de ambas temperaturas.
+   \item Estudie el comportamiento del sistema a lazo abierto y a lazo cerrado frente a perturbaciones de tipo escalón y rampa en la variable de entrada.¿Qué
+      conclusión extrae de la eficiencia del controlador PI en ambos casos?¿Que sucedería si se utiliza sólo acción proporcional?
+\end{enumerate}
+%------------------------------------------------------------------------------
+%                      fin problema 2
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+%                      problema 3
+%------------------------------------------------------------------------------
 \section{Modelado y simulacion de un sistema de almacenamiento y distribucion de agua }
+%------------------------------------------------------------------------------
+%                      fin problema 3
+%------------------------------------------------------------------------------
+
 %-------------------------------------------------------------------------
 % Bibliografia
 %-------------------------------------------------------------------------
