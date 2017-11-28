@@ -1,12 +1,12 @@
 #= -------------------------------------------------------------------------
-# @file problema1_sin_disipador.jl
+# @file problema1_sin_disipador_sundials.jl
 #
-# @date 11/23/17 20:37:44
+# @date 11/27/17 18:07:28
 # @author Martin Noblia
 # @email mnoblia@disroot.org
 #
 # @brief
-# Simulacion de las ecuaciones difenciales del problema 1 sin disipador
+#
 # @detail
 #
 #  Licence:
@@ -22,38 +22,37 @@
 #
 # You should have received a copy of the GNU General Public License
 ---------------------------------------------------------------------------=#
-# imports
-using DifferentialEquations
-using PyCall
+import Sundials
 using PyPlot
-#= using Plots =#
-# defining the constants
+
 const  C_j   =  0.5
 const  C_c   =  6.8
 const  R_jc  =  1
 const  R_ca  =  30
 const  T_a   =  30
 
-@pyimport scipy.signal as signal
-q2(t) = (175 * signal.square(2 * π * 100 * t, duty=10) + 175) / 2
-
-
 a_11 = (-1 / C_c) * ( 1 / R_jc + 1 / R_ca)
 a_12 = (1 / (R_jc * C_c))
 a_21 = (1 / (C_j * R_jc))
 a_22 = (-1/ (C_j * R_jc))
-A = [a_11 a_12
-     a_21 a_22]
 
-T₀ = [0.0, 0.0]
-tspan = (0.0, 200.0)
-q(t) = 175
-f(t, T) = A * T - [0, reshape(q2(t), 1)[1] * C_j] + [(1 / R_ca * C_c) * T_a, 0]
-prob = ODEProblem(f, T₀, tspan)
-sol = solve(prob)
-plot(sol[1, :], label=L"T_c")
-plot(sol[2, :], label=L"T_j")
+step(t) = (t >=0.0) ? 175: 0.0
+pulse(t) = (t > 0.0) ? (175 * sin(2*π*100*t) + 175) / 2 : 0.0
+"""
+docs
+"""
+function system(t, T, dT)
+   dT[1] = a_11 * T[1] + a_12 * T[2] + (1 / R_ca * C_c) * T_a
+   dT[2] = a_21 * T[1] + a_22 * T[2] - (pulse(t) * C_j)
+end
+
+T₀ = [0.0, 0.0] # initial condition
+t = linspace(0, 2000, 1000000) # time vector
+sol = Sundials.cvode(system, T₀, collect(t))
+# plot the results
+plot(t, sol[:,1], label=L"T_c")
+plot(t, sol[:,2], label=L"T_j")
+plot(t, sol[:,1] - sol[:,2])
 xlabel(L"t")
 ylabel(L"T")
-grid("on")
 legend()

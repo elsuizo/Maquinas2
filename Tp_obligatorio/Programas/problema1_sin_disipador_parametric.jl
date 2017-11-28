@@ -25,19 +25,20 @@
 using DifferentialEquations
 using PyPlot
 
-q(t) = 175
+step(t) = 175
+pulse(t) = (175 * sin(2*π*100*t) + 175) / 2
 
 family = @ode_def heat_simulation begin
    dT_c = (-1 / C_c)*( 1 / R_jc + 1 / R_ca) * T_c + (1 / (R_jc * C_c)) * T_j + (T_a / R_ca * C_c)
-   dT_j = (1 / (C_j * R_jc)) * T_c + (-1/ (C_j * R_jc)) * T_j - (q(t) * C_j)
+   dT_j = (1 / (C_j * R_jc)) * T_c + (-1/ (C_j * R_jc)) * T_j - (pulse(t) * C_j)
 end R_jc=>1.0 C_c=>6.8 R_ca=>30.0 C_j=>0.5 T_a=>30.0
 
 T₀ = [0.0 0.0]
-tspan = (0.0, 3600.0)
-problems = [ODEProblem(heat_simulation(T_a=parameter), T₀, tspan) for parameter in 30:45]
+tspan = (0.0, 2000.0)
+problems = [ODEProblem(heat_simulation(T_a=parameter), T₀, tspan) for parameter in 30:40]
 solutions = solve.(problems)
 for (num, solution) in enumerate(solutions)
-   plot(solution[2, :], label=latexstring("T_a="*"$(num + 30)"))
+   plot(solution.t, solution[1, :], label=latexstring("T_a="*"$(num + 29)"))
    legend(bbox_to_anchor=(1.09,1), loc="upper right", ncol=1)
    xlabel(L"t")
    ylabel(L"T")
