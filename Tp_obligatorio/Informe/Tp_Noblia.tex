@@ -29,6 +29,7 @@
 % Packages
 %---------------------------------------------------------------------------
 \usepackage{amsmath}
+\usepackage[table,xcdraw]{xcolor}
 \usepackage{tikz}
 \usepackage{epigraph}
 \usepackage{lipsum}
@@ -42,13 +43,12 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{latexsym}
-\usepackage{graphicx}
+% \usepackage{graphicx}
 \usepackage{color}
 \usepackage{moredefs}
 \usepackage{fancybox}
 \usepackage{subfig}
 \usepackage{float}
-\usepackage{xcolor}
 \usepackage{wallpaper}
 \usepackage{textcomp}
 \usepackage{minted} % for syntax highlight
@@ -284,21 +284,48 @@ Instructor: \\[\baselineskip]
 \titleGP
 \titlepagedecoration
 
-
 \newpage
 \pagestyle{fancy}
-
 \section{Modelado y simulación de un sistema térmico por analogía con un circuito eléctrico}
-\subsection{Diseño y modelización}
+   \subsection{Diseño y modelización}
 \begin{enumerate}
    \item Utilizando la analogía de los sistemas eléctricos, modelar matemáticamente el sistema correspondiente al circuito mostrado en la figura 1, que representa un dispositivo electrónico de potencia sin disipador.
    \item En la práctica y para poder garantizar condiciones operativas seguras se utilizan disipadores, tal como se plantea en la introducción. Desarrollar el circuito térmico equivalente para un dispositivo electrónico de potencia con disipador. Identificar en forma clara el circuito implementado y modelar matemáticamente el sistema propuesto.
 \end{enumerate}
-% Circuito de la figura 1
-\begin{figure}[h]
+\subsection{Resolución}
+\subsubsection{Introducción}
+Los circuitos eléctricos pueden utilizarse para modelar problemas de conducción de calor. Esta analogía consiste en tratar a la temperatura
+como si fueran diferencias de potencial eléctrico, a los flujos de calor como corrientes, a los diferentes modos de transferencia de calor
+como resistencias y a los fenómenos de almacenamiento de calor como capacitores. La siguiente tabla resume estas equivalencias:
+%------------------------------------------------------------------------------
+%                      tabla analogias
+%------------------------------------------------------------------------------
+\begin{table}[H]
+\centering
+\caption{Analogía entre los modelos electrico y térmico}
+\label{tabla:analogias}
+\begin{tabular}{|
+>{\columncolor[HTML]{ECF4FF}}l |c|c|
+>{\columncolor[HTML]{9AFF99}}l |c|c|}
+\hline
+\multicolumn{3}{|c|}{\cellcolor[HTML]{EFEFEF}\textbf{Modelo térmico}}                                                                                                            & \multicolumn{3}{c|}{\cellcolor[HTML]{EFEFEF}{\color[HTML]{000000} \textbf{Modelo eléctrico}}}                                                                                   \\ \hline
+\multicolumn{1}{|c|}{\cellcolor[HTML]{9B9B9B}\textit{\textbf{variable}}} & \cellcolor[HTML]{9B9B9B}\textit{\textbf{simbolo}} & \cellcolor[HTML]{9B9B9B}\textit{\textbf{unidades}} & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}\textit{\textbf{variable}}} & \cellcolor[HTML]{9B9B9B}\textit{\textbf{simbolo}} & \cellcolor[HTML]{9B9B9B}\textit{\textbf{unidades}} \\ \hline
+Temperatura                                                              & $T$                                                 & $^{\circ}C$                                      & $\Delta E$                                                              & $V$                                                 & Volts                                            \\ \hline
+Flujo de calor                                                           & $q$                                                 & $W$                                              & Corriente                                                               & $i$                                                 & Amperes                                          \\ \hline
+Resistencia Térmica                                                      & $R$                                                 & $^{\circ}C / cal$                                & Resistencia                                                             & $R$                                                 & Ohms                                              \\ \hline
+Capacidad térmica                                                        & $C$                                                 & $cal / ^{\circ}C$                                & Capacitancia                                                            & $C$                                                 & Faradays                                          \\ \hline
+\end{tabular}
+\end{table}
+%------------------------------------------------------------------------------
+%                      fin tabla analogias
+%------------------------------------------------------------------------------
+Por ello las propiedades térmicas de un dispositivo electrónico pueden modelarse con un circuito eléctrico. Sea el siguiente modelo térmico de un dispositivo electrónico:
+%------------------------------------------------------------------------------
+%                      circuito 1
+%------------------------------------------------------------------------------
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}[american]
-%--------start graphics code --------
 \path (0,0) coordinate (ref_gnd);
 \draw
    (ref_gnd) to[I, l=$P_{d}$, i_=$q$] ++(0,4)
@@ -317,9 +344,19 @@ Instructor: \\[\baselineskip]
 \end{tikzpicture}
 \caption{Circuito térmico equivalente}
 \end{figure}
-
-\subsection{Resolucioni}
-
+%------------------------------------------------------------------------------
+%                      fin circuito 1
+%------------------------------------------------------------------------------
+Donde:
+\begin{itemize}
+   \item $P_{d}$: Generador de corriente que modela el flujo de calor generado por el elemento a disipar
+   \item $R_{jb}$: Resistencia juntura/sustrato
+   \item $C_{j}$: Capacidad térmica de la juntura
+   \item $R_{bc}$: Resitencia sustrato/carcasa
+   \item $C_{b}$: Capacidad térmica del sustrato
+   \item $R_{ca}$: Resistencia carcasa/ambiente
+   \item $C_{c}$: Capacidad térmica de la carcasa
+\end{itemize}
 \section{Modelado y simulacion de un sistema de calentamiento solar}
 \section{Modelado y simulacion de un sistema de almacenamiento y distribucion de agua }
 %-------------------------------------------------------------------------
