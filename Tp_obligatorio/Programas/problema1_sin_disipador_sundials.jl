@@ -52,7 +52,7 @@ sol = Sundials.cvode(system, T₀, collect(t))
 # plot the results
 plot(t, sol[:,1], label=L"T_c")
 plot(t, sol[:,2], label=L"T_j")
-plot(t, sol[:,1] - sol[:,2])
+plot(t, sol[:,1] - sol[:,2], label=L"q_c")
 xlabel(L"t")
 ylabel(L"T")
 legend()
