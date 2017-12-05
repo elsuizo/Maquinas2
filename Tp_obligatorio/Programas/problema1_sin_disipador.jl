@@ -24,36 +24,52 @@
 ---------------------------------------------------------------------------=#
 # imports
 using DifferentialEquations
-using PyCall
-using PyPlot
-#= using Plots =#
-# defining the constants
+#= using PyPlot =#
+using Plots; pgfplots()
+#=------------------------------------------------------------------------------
+                           constants
+------------------------------------------------------------------------------=#
 const  C_j   =  0.5
 const  C_c   =  6.8
-const  R_jc  =  1
-const  R_ca  =  30
-const  T_a   =  30
-
-@pyimport scipy.signal as signal
-q2(t) = (175 * signal.square(2 * π * 100 * t, duty=10) + 175) / 2
-
-
-a_11 = (-1 / C_c) * ( 1 / R_jc + 1 / R_ca)
+const  R_jc  =  1.0
+const  R_ca  =  30.0
+const  T_a   =  30.0
+const  T_j_max = 150.0
+const  P_d  = (T_j_max - T_a) / (R_jc + R_ca)
+a_11 = (-1 / C_c) * ((1 / R_jc) + (1 / R_ca))
 a_12 = (1 / (R_jc * C_c))
 a_21 = (1 / (C_j * R_jc))
 a_22 = (-1/ (C_j * R_jc))
+#=------------------------------------------------------------------------------
+                        system matrix
+------------------------------------------------------------------------------=#
 A = [a_11 a_12
      a_21 a_22]
 
-T₀ = [0.0, 0.0]
-tspan = (0.0, 200.0)
-q(t) = 175
-f(t, T) = A * T - [0, reshape(q2(t), 1)[1] * C_j] + [(1 / R_ca * C_c) * T_a, 0]
+T₀ = [0.0, 0.0] # initial condition
+tspan = (0.0, 1500.0) # simulation time
+#=------------------------------------------------------------------------------
+                           inputs
+------------------------------------------------------------------------------=#
+step_Pd(t) = (t >=0.0) ? P_d: 0.0
+pulse_Pd(t) = (P_d * sin(2.0*π*100.0*t) + P_d) / 2.0
+# function to modelate the system
+f(t, T) = A * T + [0, pulse_Pd(t) / C_j] + [T_a / (R_ca * C_c), 0]
 prob = ODEProblem(f, T₀, tspan)
 sol = solve(prob)
-plot(sol[1, :], label=L"T_c")
-plot(sol[2, :], label=L"T_j")
-xlabel(L"t")
-ylabel(L"T")
-grid("on")
-legend()
+final_value_T_c = sol[1, end]
+final_value_T_j = sol[2, end]
+println("el valor final es:", sol[2, end])
+#=------------------------------------------------------------------------------
+                           Ploting
+------------------------------------------------------------------------------=#
+plot(sol)
+#= plot(sol.t, sol[1, :], label=L"T_c", linestyle="-.") =#
+#= plot(sol.t, sol[2, :], label=L"T_j") =#
+savefig("sample.tex")
+#= axhline(final_value_T_j, color="k", linestyle="--") =#
+#= text(0, final_value_T_j + 3, latexstring("T_J="*"$final_value_T_j"), fontsize=10) =#
+#= xlabel(L"t\,[seg]") =#
+#= ylabel(L"T\,[^{\circ}C]") =#
+#= grid("on") =#
+#= legend() =#
