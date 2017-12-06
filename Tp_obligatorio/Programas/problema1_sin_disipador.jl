@@ -24,8 +24,7 @@
 ---------------------------------------------------------------------------=#
 # imports
 using DifferentialEquations
-#= using PyPlot =#
-using Plots; pgfplots()
+using PyPlot
 #=------------------------------------------------------------------------------
                            constants
 ------------------------------------------------------------------------------=#
@@ -53,23 +52,24 @@ tspan = (0.0, 1500.0) # simulation time
 ------------------------------------------------------------------------------=#
 step_Pd(t) = (t >=0.0) ? P_d: 0.0
 pulse_Pd(t) = (P_d * sin(2.0*π*100.0*t) + P_d) / 2.0
-# function to modelate the system
-f(t, T) = A * T + [0, pulse_Pd(t) / C_j] + [T_a / (R_ca * C_c), 0]
+#=------------------------------------------------------------------------------
+                  function to modelate the system
+------------------------------------------------------------------------------=#
+f(t, T) = A * T + [0, step_Pd(t) / C_j] + [T_a / (R_ca * C_c), 0]
 prob = ODEProblem(f, T₀, tspan)
 sol = solve(prob)
 final_value_T_c = sol[1, end]
 final_value_T_j = sol[2, end]
-println("el valor final es:", sol[2, end])
+println("el valor final de T_J es:", sol[2, end])
 #=------------------------------------------------------------------------------
                            Ploting
 ------------------------------------------------------------------------------=#
-plot(sol)
-#= plot(sol.t, sol[1, :], label=L"T_c", linestyle="-.") =#
-#= plot(sol.t, sol[2, :], label=L"T_j") =#
-savefig("sample.tex")
-#= axhline(final_value_T_j, color="k", linestyle="--") =#
-#= text(0, final_value_T_j + 3, latexstring("T_J="*"$final_value_T_j"), fontsize=10) =#
-#= xlabel(L"t\,[seg]") =#
-#= ylabel(L"T\,[^{\circ}C]") =#
-#= grid("on") =#
-#= legend() =#
+plot(sol.t, sol[1, :], label=L"T_c", linewidth=3)
+plot(sol.t, sol[2, :], label=L"T_j", linewidth=2)
+axhline(final_value_T_j, color="k", linestyle="--")
+text(0, final_value_T_j + 3, latexstring("T_J="*"$final_value_T_j"), fontsize=10)
+xlabel(L"t\,[seg]")
+ylabel(L"T\,[^{\circ}C]")
+grid("on")
+matplotlib["rcParams"][:update](["font.size" => 14, "font.family" => "serif"])
+legend()
