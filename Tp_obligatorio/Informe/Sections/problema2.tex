@@ -1,0 +1,69 @@
+\section{Modelado y simulación de un sistema de calentamiento solar}
+\begin{enumerate}
+   \item Modele matemáticamente el sistema de calentamiento, tomando como variable
+         de salida la temperatura $\theta(t)$\label{item_2_1}
+   \item Halle el flujo de calor por radiación necesario para obtener en estado
+         estacionario una temperatura de salida $\theta_{ref}=60^{\circ}C$\label{item_2_2}
+   \item Obtenga el tiempo necesario para alcanzar dicha temperatura, si el
+         fluido a calentar se encuentra a $\theta_{0}=15^{\circ}C$\label{item_2_3}
+   \item En época invernal la radiación solar se reduce notablemente y es
+         insuficiente para alcanzar la temperatura deseada. Considere una situación en donde la
+         radiación es del $40\%$ de la obtenida en el item anterior, y la temperatura inicial del
+         fluído es de $15^{\circ}C$. Cual es la temperatura de estado estacionario en estas
+         condiciones?\label{item_2_4}
+   \item Diseñe un circuito que complemente el colector solar para lograr la temperatura deseada
+         de $60^{\circ}C$. Cuando el sistema de calentamiento se encuentra funcionando en lazo
+         abierto, cualquier pequeña perturbacion en las condiciones teóricas de operación produce
+         una desviación no deseada en la temperatura estacionaria de salida. Por este motivo,
+         se ha introducido un controlador PI para garantizar el seguimiento de la consigna de
+         temperatura en estado estacionario. De esta manera, una vez cerrado el lazo, la potencia
+         calorífica que se suministra al circuito complementario es calculada directamente por el
+         algoritmo de control y la nueva variable de entrada al sistema es entonces la temperatura
+         de referencia $\theta_{ref}$\label{item_2_5}
+   \item Modele matemáticamente el sistema a lazo cerrado, tomando como variable de salida la
+         temperatura $\theta(t)$ y como variable de entrada su valor de referencia $\theta_{ref}$\label{item_2_6}
+   \item Simule la evolución dinámica de la temperatura del sistema desde un instante inicial
+         $\theta_{0}$ hasta un valor de referencia $\theta_{ref}$, operando en lazo abierto y
+         en lazo cerrado, para tres valores distintos de ambas temperaturas.\label{item_2_7}
+   \item Estudie el comportamiento del sistema a lazo abierto y a lazo cerrado frente a
+         perturbaciones de tipo escalón y rampa en la variable de entrada.¿Qué conclusión extrae
+         de la eficiencia del controlador PI en ambos casos?¿Que sucedería si se utiliza sólo
+         acción proporcional?\label{item_2_8}
+\end{enumerate}
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.37\textwidth]{Images/colector_esquema.eps}
+   \caption{Esquema del colector solar}\label{fig:colector_esquema}
+\end{figure}
+%------------------------------------------------------------------------------
+%                      resolucion problema 2
+%------------------------------------------------------------------------------
+\subsection{Resolución}
+\subsubsection{\ref{item_2_1}-Modelado del problema}
+Para modelar matemáticamente el sistema de calentamiento, planteamos un balance de energía alrededor
+del agua del colector (cuyo Volumen de Control se muestra en la fig[\ref{fig:colector_esquema}]),
+eligiendo una base de tiempos diferencial:
+\begin{equation}
+   \dot{E}_{e} - \dot{E}_{s}=\dot{E}_{a}\label{eq:balance}
+\end{equation}
+Donde:
+\begin{equation}
+   \dot{E}_{e} = \alpha\,G\,A\label{eq:balance_entrada}
+\end{equation}
+\begin{equation}
+   \dot{E}_{s} = \dfrac{\theta(t) - \theta_{a}}{R}\label{eq:balance_salida}
+\end{equation}
+\begin{equation}
+   \dot{E}_{a} = c_{e}\,V\,\dfrac{d\theta(t)}{dt}\label{eq:balance_acumulacion}
+\end{equation}
+Entonces reemplazando [\ref{eq:balance_entrada}], [\ref{eq:balance_salida}] y
+[\ref{eq:balance_acumulacion}] en [\ref{eq:balance}] obtenemos la siguiente ecuación diferencial:
+
+\begin{equation}
+   \alpha\,G\,A - \dfrac{\theta(t) - \theta_{a}}{R} = c_{e}\,V\,\dfrac{d\theta(t)}{dt}\label{eq:balance_completo}
+\end{equation}
+%------------------------------------------------------------------------------
+%                      fin problema 2
+%------------------------------------------------------------------------------
+
