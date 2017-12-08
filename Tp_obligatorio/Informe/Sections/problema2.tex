@@ -49,7 +49,7 @@ eligiendo una base de tiempos diferencial:
 \end{equation}
 Donde:
 \begin{equation}
-   \dot{E}_{e} = \alpha\,G\,A\label{eq:balance_entrada}
+   \dot{E}_{e} = G\,A\label{eq:balance_entrada}
 \end{equation}
 \begin{equation}
    \dot{E}_{s} = \dfrac{\theta(t) - \theta_{a}}{R}\label{eq:balance_salida}
@@ -61,8 +61,59 @@ Entonces reemplazando [\ref{eq:balance_entrada}], [\ref{eq:balance_salida}] y
 [\ref{eq:balance_acumulacion}] en [\ref{eq:balance}] obtenemos la siguiente ecuación diferencial:
 
 \begin{equation}
-   \alpha\,G\,A - \dfrac{\theta(t) - \theta_{a}}{R} = c_{e}\,V\,\dfrac{d\theta(t)}{dt}\label{eq:balance_completo}
+   G\,A - \dfrac{\theta(t) - \theta_{a}}{R} = c_{e}\,V\,\dfrac{d\theta(t)}{dt}\label{eq:balance_completo}
 \end{equation}
+Que podemos expresar:
+\begin{equation}
+   \dfrac{d\theta(t)}{dt} = \dfrac{G\,A}{c_{e}\,V} + \dfrac{\theta_{a}}{R\,c_{e}\,V} - \dfrac{\theta(t)}{R\,c_{e}\,V}
+   \label{eq:modelo_problema2}
+\end{equation}
+\subsubsection{\ref{item_2_2}-Flujo de calor por radiación}
+Para obtener en estado estacionario una temperatura de salida $\theta_{ref}=60\degree C$. De la ecuación que
+modela el problema[\ref{eq:modelo_problema2}], la condición que se debe cumplir en estado estacionario
+es $\dfrac{d\theta(t)}{dt} = 0$, donde en este caso se quiere que $\theta(t)=\theta_{ref}$ entonces
+reemplazando nos queda:
+\begin{align}
+   0 &= \dfrac{G_{nec}\,A}{c_{e}\,V} + \dfrac{\theta_{a}}{R\,c_{e}\,V} - \dfrac{\theta(t)}{R\,c_{e}\,V}\\
+   0 &= G_{nec} \, A + \dfrac{\theta_{a}-\theta_{ref}}{R}\\
+   G_{nec} &= \dfrac{\theta_{ref}-\theta_{a}}{R\,A}\label{eq:flujo_necesario}
+\end{align}
+Reemplazando los valores dados nos queda:
+\begin{equation}
+   G_{nec} = 836800 \,[W/m^{2}]
+\end{equation}
+Con este valor calculado se simula el sistema cuya grafica es la siguiente:
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.67\textwidth]{Images/temperatura_colector.eps}
+   \caption{Temperatura colector solar}\label{fig:colector_temperatura}
+\end{figure}
+
+
+\subsubsection{\ref{item_2_3}-tiempo para alcanzar la temperatura $\theta_{ref}$}
+Si bien del grafico se puede ver que alcanza el valor, no esta claro en que momento exacto llega a ese valor,
+por ello se realizo una simulación numérica del mismo para verificar exactamente cuando
+alcanza el valor. El resultado que se obtuvo es: $t_a =571.312[seg]$ (\verb|Programas/problema2_tiempo_60.jl|)
+
+\subsubsection{\ref{item_2_4}-Epoca invernal}
+En epocas invernales tenemos las siguientes variantes:
+
+\begin{itemize}
+   \item $G_{inv}=0.4\,G_{nec}$
+   \item $\theta_{0} = 8 \degree C$
+\end{itemize}
+Simulando el sistema con estos valores nos genera el siguiente perfil de temperatura:
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.67\textwidth]{Images/temperatura_colector_invierno.eps}
+   \caption{Temperatura colector solar en invierno}\label{fig:colector_temperatura_invierno}
+\end{figure}
+
+cuya solución numérica nos arroja el valor final de temperatura: $\theta_{inv} = 35.999 \degree C$
+
+(\verb|Programas/problema2_simulacion_calentamiento_invierno.jl|)
 %------------------------------------------------------------------------------
 %                      fin problema 2
 %------------------------------------------------------------------------------
