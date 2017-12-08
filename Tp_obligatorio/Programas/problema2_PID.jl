@@ -22,7 +22,7 @@
 #
 # You should have received a copy of the GNU General Public License
 ---------------------------------------------------------------------------=#
-import Sundials
+using Sundials
 using PyPlot
 #=------------------------------------------------------------------------------
                               constants
@@ -35,9 +35,61 @@ const  θ_ref  =  333.0
 const  θ₀     =  288.0
 const  θₐ    =  293.0
 G_inv = 0.4 * 836800.0
-i(t) = 7
-q(t) = (i(t))^2
+
+
 function heat_panel(t, θ, dθ)
-   dθ = q(t)/(cₑ * V) + (A * G_inv)/(cₑ * V * R) - (θ - θₐ) / (cₑ * V * R)
+   dθ[1] = u[1] /(cₑ * V) + (A * G_inv)/(cₑ * V * R) - (θ[1] - θₐ) / (cₑ * V * R)
 end
+#=------------------------------------------------------------------------------
+                        constants of the algorithm
+------------------------------------------------------------------------------=#
+K_c = 1
+tauI = 0.913444964569
+tauD = 0.0
+t_sim = 100
+δt  = .1
+time_sim = linspace(0, t_sim)
+set_point = zeros(time_sim) # zeros like t
+error = zeros(time_sim) # zeros like t
+θ = zeros(time_sim) # zeros like t
+dθ = zeros(time_sim) # zeros like t
+error_int = zeros(time_sim) # zeros like t
+P = zeros(time_sim)
+I = zeros(time_sim)
+D = zeros(time_sim)
+pv = zeros(time_sim)
+controller_out = zeros(time_sim)
+# Upper and Lower limits on OP
+controller_max = 350.0
+controller_min = 250.0
+
+u = ones(time_sim) * θ_ref
+for sample in 0:t_sim
+   Δt = time_sim[sample+1] - time_sim[sample+2]
+   error[sample+1] = set_point[sample+1] - pv[sample+1]
+   P[sample+1] = K_c * error[sample+1]
+   I[sample+1] = K_c/tauI * error_int[sample+1]
+   D[sample+1] = - K_c * tauD * dθ[sample+1]
+   controller_out[sample+1] = controller_out[1] + P[sample+1] + I[sample+1] + D[sample+1]
+   if controller_out[sample+1] > controller_max  # check upper limit
+      controller_out[sample+1] = controller_max
+      error_int[sample+1] = error_int[sample+1] - error[sample+1] * Δt # anti-reset windup
+   end
+   if controller_out[sample+1] < controller_min  # check lower limit
+      controller_out[sample+1] = controller_min
+      error_int[sample+1] = error_int[sample+1] - error[sample+1] * Δt # anti-reset windup
+   end
+   ts = [time_sim[sample+1],time_sim[sample+2]]
+   u[sample+2]= controller_out[sample+1]
+   sol = Sundials.cvode(heat_panel, θ₀,ts)
+   θ[sample+2] = sol[end]
+   θ₀ = θ[sample+2]
+   pv[sample+2] = θ[sample+2]
+end
+#= controller_out[len(t)-1] = controller_out[len(t)-2] =#
+#= ie[len(t)-1] = ie[len(t)-2] =#
+#= P[len(t)-1] = P[len(t)-2] =#
+#= I[len(t)-1] = I[len(t)-2] =#
+#= D[len(t)-1] = D[len(t)-2] =#
+#=  =#
 
