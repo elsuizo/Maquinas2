@@ -94,7 +94,8 @@ Con este valor calculado se simula el sistema cuya grafica es la siguiente:
 \subsubsection{\ref{item_2_3}-tiempo para alcanzar la temperatura $\theta_{ref}$}
 Si bien del grafico se puede ver que alcanza el valor, no esta claro en que momento exacto llega a ese valor,
 por ello se realizo una simulación numérica del mismo para verificar exactamente cuando
-alcanza el valor. El resultado que se obtuvo es: $t_a =571.312[seg]$ (\verb|Programas/problema2_tiempo_60.jl|)
+alcanza el valor. El resultado que se obtuvo es (con una tolerancia de $10e-12$): $t_a =571.312[seg]$
+(\verb|Programas/problema2_tiempo_60.jl|)
 
 \subsubsection{\ref{item_2_4}-Perfil de temperatura en epoca invernal}
 En epocas invernales tenemos las siguientes variantes:
@@ -108,12 +109,26 @@ Simulando el sistema con estos valores nos genera el siguiente perfil de tempera
 \begin{figure}[H]
    \centering
    \includegraphics[width=0.67\textwidth]{Images/temperatura_colector_invierno.eps}
-   \caption{Temperatura colector solar en invierno}\label{fig:colector_temperatura_invierno}
+   \caption{temperatura colector solar en invierno}\label{fig:colector_temperatura_invierno}
 \end{figure}
 
 cuya solución numérica nos arroja el valor final de temperatura: $\theta_{inv} = 35.999 \degree C$
 
 (\verb|Programas/problema2_simulacion_calentamiento_invierno.jl|)
+
+\subsubsection{\ref{item_2_5}-Diseño de Circuito complementario}
+De los resultados anteriores se pudo observar que no es posible alcanzar los niveles de temperatura
+deseada, por ello para cumplir con ese requerimiento debemos agregar una fuente de generación de
+calor externa. Una de las posibles soluciones es agregar un sistema de calentamiento simple, que
+consiste en el calentamiento de una resistencia electrica dentro del colector de agua. La fuente
+de corriente podría provenir de una placa fotovoltaica instalada al lado del colector solar
+Gráficamente:
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.47\textwidth]{Images/colector_esquema_invierno.eps}
+   \caption{Colector solar alternativo para el invierno}\label{fig:colector_esquema_invierno}
+\end{figure}
 %------------------------------------------------------------------------------
 %                      fin problema 2
 %------------------------------------------------------------------------------
