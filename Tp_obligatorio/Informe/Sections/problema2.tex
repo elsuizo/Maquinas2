@@ -154,7 +154,8 @@ La fuente de calor externa entonces se puede expresar en función del tiempo:
 Ahora el balance de energía se modifica ya que hemos agregado una fuente de calor, por ello nos queda:
 
 \begin{equation}
-   q(t)+ A\,G_{inv}-\dfrac{\theta(t)-\theta_{a}}{R}=c_e\,V\,\dfrac{d\theta(t)}{dt}\label{eq:balance_close_loop}
+   q(t)+ \left(A\,G_{inv}-\dfrac{\theta(t)-\theta_{a}}{R} + q_{nec}\right)=c_e\,V\,\dfrac{d\theta(t)}{dt}
+   \label{eq:balance_close_loop}
 \end{equation}
 
 \subsubsection{\ref{item_2_6}-Modelo a lazo cerrado}
@@ -168,7 +169,8 @@ Donde:
 \end{equation}
 Entonces reemplazando en [\ref{eq:balance_close_loop}] nos queda:
 \begin{equation}
-   K_p\,e(t)+K_i\,\int_0^{t}\,e(\alpha)\,d\alpha + A\,G_{inv}-\dfrac{\theta(t)-\theta_{a}}{R}=c_e\,V\,\dfrac{d\theta(t)}{dt}
+   K_p\,e(t)+K_i\,\int_0^{t}\,e(\alpha)\,d\alpha + \left(A\,G_{inv}-\dfrac{\theta(t)-\theta_{a}}{R} + q_{nec}\right)=
+   c_e\,V\,\dfrac{d\theta(t)}{dt}
    \label{eq:close_loop}
 \end{equation}
 %------------------------------------------------------------------------------
