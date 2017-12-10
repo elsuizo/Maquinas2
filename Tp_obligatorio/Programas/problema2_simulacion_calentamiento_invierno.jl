@@ -33,16 +33,26 @@ const  cₑ     =  4.184e6
 const  V      =  0.5
 const  θ_ref  =  333.0
 const  θ₀     =  281.0
-const  θ_a    =  293.0
+const  θ_a    =  281.0
+q = 1841012.0
 G_inv = 0.4 * 836800.0
 tspan = (0.0, 1000.0)
+<<<<<<< HEAD
+q_nec = ((θ_ref - θ_a) / (R)) - A * G_inv
 θ_dot(t, θ) = ((G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
+θ_dot_comp(t, θ) = ((G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V))) + (q_nec / (cₑ * V))
+=======
+θ_dot(t, θ) = ((q / (cₑ * V)) + (G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
+>>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
 prob = ODEProblem(θ_dot, θ₀, tspan)
+prob_comp = ODEProblem(θ_dot_comp, θ₀, tspan)
 sol = solve(prob, Tsit5(), reltol=1e-12,abstol=1e-12)
+sol_comp = solve(prob_comp, Tsit5(), reltol=1e-12,abstol=1e-12)
 #=------------------------------------------------------------------------------
                            plotting
 ------------------------------------------------------------------------------=#
 plot(sol.t, sol[1, :] - 273.0, label=L"\theta_{inv}(t)", linewidth=3)
+plot(sol_comp.t, sol_comp[1, :] - 273.0, label=L"\theta_{inv-comp}(t)", linewidth=3)
 xlabel(L"t\,[seg]")
 ylabel(L"T\,[^{\circ}C]")
 grid("on")
