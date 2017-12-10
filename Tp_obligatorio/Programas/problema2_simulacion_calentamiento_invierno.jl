@@ -35,19 +35,18 @@ const  θ_ref  =  333.0
 const  θ₀     =  281.0
 const  θ_a    =  281.0
 q = 1841012.0
+K_p = 0.0001
 G_inv = 0.4 * 836800.0
 tspan = (0.0, 1000.0)
-<<<<<<< HEAD
-<<<<<<< HEAD
+θ_a_f(t) = (100 < t > 300 ) ? θ_a + 100: θ_a
+# calculo del q_comp
 q_nec = ((θ_ref - θ_a) / (R)) - A * G_inv
+# sin compensar en invierno
 θ_dot(t, θ) = ((G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
-θ_dot_comp(t, θ) = ((G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V))) + (q_nec / (cₑ * V))
-=======
+# compensado en invierno
+θ_dot_comp(t, θ) = ((G_inv * A) / (cₑ * V)) + ((θ_a_f(t) / (R * cₑ * V))) - ((θ / (R * cₑ * V))) + (q_nec / (cₑ * V)) + (sol(t)-θ_ref) * K_p
 θ_dot(t, θ) = ((q / (cₑ * V)) + (G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
-=======
 θ_dot(t, θ) = ((q / (cₑ * V)) + (G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
 prob = ODEProblem(θ_dot, θ₀, tspan)
 prob_comp = ODEProblem(θ_dot_comp, θ₀, tspan)
 sol = solve(prob, Tsit5(), reltol=1e-12,abstol=1e-12)

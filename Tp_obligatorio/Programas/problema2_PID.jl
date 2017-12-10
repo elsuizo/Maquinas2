@@ -32,17 +32,12 @@ const  R      =  2.390057361376673e-5
 const  cₑ     =  4.184e6
 const  V      =  0.5
 const  θ_ref  =  333.0
-<<<<<<< HEAD
-<<<<<<< HEAD
 θ₀     =  [288.0]
 const  θₐ    =  293.0
 G_inv = 0.4 * 836800.0
 τ = R * cₑ * V
 function heat_panel(t, θ, dθ)
    dθ[1] = ((R/τ) * u * exp((-t[1])/(τ))/ (cₑ * V)) + ((A * G_inv))/((cₑ * V * R)) - ((θ[1] - θₐ)) / ((cₑ * V * R))
-=======
-=======
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
 const  θₐ     =  293.0
 θ₀     =  281.0
 const  τ      = R * cₑ * V
@@ -52,10 +47,6 @@ q_sup = (θ_ref - θₐ)/(R) - A * G_inv
 τ = R * cₑ * V
 function heat_panel_winter(t, A, θ₀, θₐ, τ, G, u)
    (u * R * exp(-t/τ)) / (τ) + ((θₐ + R*A*G) * (1 - exp(-t / τ))) + θ₀ * exp(-t / τ)
-<<<<<<< HEAD
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
-=======
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
 end
 #=------------------------------------------------------------------------------
                         constants of the algorithm
@@ -79,22 +70,13 @@ pv = zeros(time_sim)
 controller_out = zeros(time_sim)
 # Upper and Lower limits on OP
 controller_max = 3e6
-<<<<<<< HEAD
-<<<<<<< HEAD
 controller_min = 0.0
 
-=======
-=======
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
 controller_min = 0
 #= v1 = view(set_point, 1:100) =#
 #= v2 = view(set_point, 100:300) =#
 #= #= fill!(v1, 200) =# =#
 #= fill!(v2, 333.0) =#
-<<<<<<< HEAD
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
-=======
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
 pv[1] = θ_ref
 u = ones(time_sim) * θ_ref
 for sample in 0:length(time_sim) - 2
@@ -103,21 +85,15 @@ for sample in 0:length(time_sim) - 2
    if sample >= 1  # calculate starting on second cycle
      error_int[sample+1] = error_int[sample] + error[sample+1] * Δt
    end
-<<<<<<< HEAD
-<<<<<<< HEAD
    P[sample+1] = K_p * error[sample+1]
    I[sample+1] = K_i* error_int[sample+1]
    controller_out[sample+1] = controller_out[1] + P[sample+1] + I[sample+1] + D[sample+1]
-=======
    P[sample+1] = Kp * error[sample+1]
    I[sample+1] = Ki* error_int[sample+1]
    controller_out[sample+1] = controller_out[1] + P[sample+1] + I[sample+1]
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
-=======
    P[sample+1] = Kp * error[sample+1]
    I[sample+1] = Ki* error_int[sample+1]
    controller_out[sample+1] = controller_out[1] + P[sample+1] + I[sample+1]
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
    if controller_out[sample+1] > controller_max  # check upper limit
       controller_out[sample+1] = controller_max
       error_int[sample+1] = error_int[sample+1] - error[sample+1] * Δt # anti-reset windup
@@ -126,14 +102,8 @@ for sample in 0:length(time_sim) - 2
       controller_out[sample+1] = controller_min
       error_int[sample+1] = error_int[sample+1] - error[sample+1] * Δt # anti-reset windup
    end
-<<<<<<< HEAD
-<<<<<<< HEAD
    ts = [time_sim[sample+1],time_sim[sample+2]]
    #= @show ts =#
-=======
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
-=======
->>>>>>> 20dca04d9289e54d0c08463e07ab0046f4f6096f
    u[sample+2]= controller_out[sample+1]
    sol = heat_panel_winter(time_sim[sample+1], A, θ₀, θₐ, τ, G_inv,u[sample+1])
    θ[sample+2] = sol[end]
