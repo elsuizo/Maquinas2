@@ -33,10 +33,11 @@ const  cₑ     =  4.184e6
 const  V      =  0.5
 const  θ_ref  =  333.0
 const  θ₀     =  281.0
-const  θ_a    =  293.0
+const  θ_a    =  281.0
+q = 1841012.0
 G_inv = 0.4 * 836800.0
 tspan = (0.0, 1000.0)
-θ_dot(t, θ) = ((G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
+θ_dot(t, θ) = ((q / (cₑ * V)) + (G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
 prob = ODEProblem(θ_dot, θ₀, tspan)
 sol = solve(prob, Tsit5(), reltol=1e-12,abstol=1e-12)
 #=------------------------------------------------------------------------------
