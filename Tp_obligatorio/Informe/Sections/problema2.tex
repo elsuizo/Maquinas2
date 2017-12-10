@@ -116,9 +116,27 @@ cuya solución numérica nos arroja el valor final de temperatura: $\theta_{inv}
 
 (\verb|Programas/problema2_simulacion_calentamiento_invierno.jl|)
 
+La potencia necesaria adicional que necesitamos para llegar a la temperatura deseada $\theta_{ref}$, la podemos calcular
+planteando condiciones de estado estable ($\dfrac{d\theta}{dt}=0$) en el balance de energía osea:
+\begin{align}
+   q_{nec}+\,A\,G_{inv}&=\dfrac{\theta_{ref}-\theta_{a}}{R}\\
+   q_{nec}&=\frac{\theta_{ref}-\theta_{a}}{R}-\,A\,G_{inv}\\
+   q_{nec}&=1.00416e6\,[W]
+\end{align}
+Verificamos que con ese valor de potencia colorica agregada obtemos el valor final deseado para el perfil de temperatura
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.67\textwidth]{Images/colector_esquema_invierno_comp.eps}
+   \caption{temperatura colector solar en invierno y temperatura compensada}\label{fig:colector_temperatura_invierno_comp}
+\end{figure}
+
+%------------------------------------------------------------------------------
+%                      2_5
+%------------------------------------------------------------------------------
 \subsubsection{\ref{item_2_5}-Diseño de Circuito complementario}
 De los resultados anteriores se pudo observar que no es posible alcanzar los niveles de temperatura
-deseada, por ello para cumplir con ese requerimiento debemos agregar una fuente de generación de
+deseada en invierno, por ello para cumplir con ese requerimiento debemos agregar una fuente de generación de
 calor externa. Una de las posibles soluciones es agregar un sistema de calentamiento simple, que
 consiste en el calentamiento de una resistencia electrica dentro del colector de agua. La fuente
 de corriente podría provenir de una placa fotovoltaica instalada al lado del colector solar
@@ -129,6 +147,30 @@ Gráficamente:
    \includegraphics[width=0.47\textwidth]{Images/colector_esquema_invierno.eps}
    \caption{Colector solar alternativo para el invierno}\label{fig:colector_esquema_invierno}
 \end{figure}
+La fuente de calor externa entonces se puede expresar en función del tiempo:
+\begin{equation}
+   q(t) = R_{e}\,\left(i(t)\right)^{2}
+\end{equation}
+Ahora el balance de energía se modifica ya que hemos agregado una fuente de calor, por ello nos queda:
+
+\begin{equation}
+   q(t)+ A\,G_{inv}-\dfrac{\theta(t)-\theta_{a}}{R}=c_e\,V\,\dfrac{d\theta(t)}{dt}\label{eq:balance_close_loop}
+\end{equation}
+
+\subsubsection{\ref{item_2_6}-Modelo a lazo cerrado}
+A lazo cerrado la señal de control que nos permite regular la temperatura del colector solar:
+\begin{equation}
+   q(e(t))=K_p\,e(t)+K_i\,\int_0^{t}\,e(\alpha)\,d\alpha
+\end{equation}
+Donde:
+\begin{equation}
+   e(t) = (\theta_{ref}(t)-\theta(t))
+\end{equation}
+Entonces reemplazando en [\ref{eq:balance_close_loop}] nos queda:
+\begin{equation}
+   K_p\,e(t)+K_i\,\int_0^{t}\,e(\alpha)\,d\alpha + A\,G_{inv}-\dfrac{\theta(t)-\theta_{a}}{R}=c_e\,V\,\dfrac{d\theta(t)}{dt}
+   \label{eq:close_loop}
+\end{equation}
 %------------------------------------------------------------------------------
 %                      fin problema 2
 %------------------------------------------------------------------------------
