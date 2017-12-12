@@ -1,0 +1,4 @@
+  Variable,       Valor,                           Resumen,  Tipo de dato
+         A,         2.0,   Area superficial de el colector,       Float64
+         R,    2.390e-5,  Resistencia termica del colector,       Float64
+       c_e,     4.184e6,        Capacidad termica         ,       Float64

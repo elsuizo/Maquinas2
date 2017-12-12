@@ -40,24 +40,26 @@ Panel_constants(a::T, b::T, c::T, d::T) where T <: Number = Panel_constants{T}(a
 
 struct Problem_variables{T<:Number} <:Real
    θ₀::T
-   θₐ::T
+   θₐ::Function
    G::T
 end
 
+θ_ref = 60.0 + 273.0
+θ_a = 293.0
 G_inv = 0.4 * 836800.0
-
+θ_a_f(t) = 293.0
 constants = Panel_constants(2.0, 2.390e-5, 4.184e6, 0.5)
-problem_vars = Problem_variables(288.0, 293.0, G_inv)
+problem_vars = Problem_variables(288.0,θ_a_f, G_inv)
+q_nec = ((θ_ref - θ_a) / (constants.R)) - constants.A * G_inv
 #------------------------------------------------------------------------------
 #                            function
 #------------------------------------------------------------------------------
 function heat_panel(t, constants::Panel_constants, problem::Problem_variables)
-   problem_vars.θ₀ * exp(-t / constants.τ) + ((problem_vars.θₐ + constants.R*constants.A*problem_vars.G) * (1 - exp(-t / constants.τ)))
+   problem_vars.θ₀ * exp(-t / constants.τ) + ((problem_vars.θₐ(t) + constants.R*constants.A*problem_vars.G) * (1 - exp(-t / constants.τ)))
 end
-
-t = 0:0.01:1000
-τ = R * cₑ * V
-θ = heat_panel.(t, constants, problem_vars)
-
+K_p = 0.001
+t = 0:0.01:500
+sample_past = 0.0
+θ = [heat_panel(sample, constants, problem_vars) + q_nec  for sample in t]
 plot(t, θ-273)
 

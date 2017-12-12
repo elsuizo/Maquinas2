@@ -35,6 +35,7 @@ const  θ_ref  =  333.0
 θ₀     =  [288.0]
 const  θₐ    =  293.0
 G_inv = 0.4 * 836800.0
+q_nec = ((θ_ref - θ_a) / (R)) - A * G_inv
 τ = R * cₑ * V
 function heat_panel(t, θ, dθ)
    dθ[1] = ((R/τ) * u * exp((-t[1])/(τ))/ (cₑ * V)) + ((A * G_inv))/((cₑ * V * R)) - ((θ[1] - θₐ)) / ((cₑ * V * R))
