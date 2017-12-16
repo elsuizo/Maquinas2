@@ -46,7 +46,6 @@ q_nec = ((θ_ref - θ_a) / (R)) - A * G_inv
 # compensado en invierno
 θ_dot_comp(t, θ) = ((G_inv * A) / (cₑ * V)) + ((θ_a_f(t) / (R * cₑ * V))) - ((θ / (R * cₑ * V))) + (q_nec / (cₑ * V)) + (sol(t)-θ_ref) * K_p
 θ_dot(t, θ) = ((q / (cₑ * V)) + (G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
-θ_dot(t, θ) = ((q / (cₑ * V)) + (G_inv * A) / (cₑ * V)) + ((θ_a / (R * cₑ * V))) - ((θ / (R * cₑ * V)))
 prob = ODEProblem(θ_dot, θ₀, tspan)
 prob_comp = ODEProblem(θ_dot_comp, θ₀, tspan)
 sol = solve(prob, Tsit5(), reltol=1e-12,abstol=1e-12)

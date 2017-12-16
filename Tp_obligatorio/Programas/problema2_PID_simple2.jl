@@ -45,4 +45,6 @@ end
 t = 0:0.01:1000
 θ = heat_panel.(t, A, θ₀, θₐ, τ, G_inv)
 
-plot(t, θ - 273)
+for i in 1:10
+   println("i:", i)
+end
