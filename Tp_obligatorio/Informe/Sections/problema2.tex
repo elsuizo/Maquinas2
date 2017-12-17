@@ -175,6 +175,63 @@ Entonces reemplazando en [\ref{eq:balance_close_loop}] nos queda:
 \end{equation}
 Se puede ver que cuando la señal de error es cero (cuando $\theta(t)=\theta_{ref}$) la temperatura del sistema será
 $\theta_{ref}$ que se logra gracias a la compensación que calculamos anteriormente.
+\subsubsection{\ref{item_2_7}-Simulacion del sistema a lazo cerrado}
+
+Simulamos el sistema a lazo cerrado para tres valores distintos de temperatura inicial y tres valores distintos de temperatura
+de referencia $\theta_{ref}$:
+\verb|Programas/problema2_PID.jl|
+
+\begin{figure}[H]
+   \centering
+   \subfloat[]{\label{fig:PID_50_1}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_50_1.eps}}
+   \subfloat[]{\label{fig:PID_50_2}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_50_2.eps}}%[20pt]
+   \subfloat[]{\label{fig:PID_50_3}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_50_3.eps}}%[20pt]
+   \caption{Respuestas del sistema a lazo cerrado con $\theta_{ref}=50$ y diferentes valores de $\theta_{0}$}
+\end{figure}
+
+\begin{figure}[H]
+   \centering
+   \subfloat[]{\label{fig:PID_70_1}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_70_1.eps}}
+   \subfloat[]{\label{fig:PID_70_2}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_70_2.eps}}%[20pt]
+   \subfloat[]{\label{fig:PID_70_3}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_70_3.eps}}%[20pt]
+   \caption{Respuestas del sistema a lazo cerrado con $\theta_{ref}=70$ y diferentes valores de $\theta_{0}$}
+\end{figure}
+
+\begin{figure}[H]
+   \centering
+   \subfloat[]{\label{fig:PID_80_1}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_80_1.eps}}
+   \subfloat[]{\label{fig:PID_80_2}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_80_2.eps}}%[20pt]
+   \subfloat[]{\label{fig:PID_80_3}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_80_3.eps}}%[20pt]
+   \caption{Respuestas del sistema a lazo cerrado con $\theta_{ref}=80$ y diferentes valores de $\theta_{0}$}
+\end{figure}
+
+\subsubsection{\ref{item_2_8}-Respuesta con perturbacion}
+Simulamos la respuesta del sistema con tres perturbaciones aleatorias tipo escalón con los siguientes resultados:
+\verb|Programas/problema2_PID.jl|
+
+\begin{figure}[H]
+   \centering
+   \subfloat[]{\label{fig:PID_60_pert_1}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_60_pert1.eps}}
+   \subfloat[]{\label{fig:PID_60_pert_2}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_60_pert2.eps}}%[20pt]
+   \subfloat[]{\label{fig:PID_60_pert_3}
+   \includegraphics[width=0.30\linewidth]{Images/PI_ref_60_pert3.eps}}%[20pt]
+   \caption{Respuestas del sistema a lazo cerrado con $\theta_{ref}=60$, diferentes valores de $\theta_{0}$
+   y una perturbacion en $\theta_{a}$}
+\end{figure}
+
+
+
 %------------------------------------------------------------------------------
 %                      fin problema 2
 %------------------------------------------------------------------------------
